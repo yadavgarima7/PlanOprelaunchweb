@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const sheetID = "18aPcMhMDrqFxb19__bW4fA9-SY1RgLWhQSpcZ2MAgIM";
 const sheetName = "providers"; // Name of your sheet tab
-const apiKey = "AIzaSyB2v-6TvIB7faor9xcBnCAQXnuIMmXgjmI";
+const apiKey = "";
 const SHEET_URL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
 
 // ✅ Default category-based images
@@ -121,7 +121,7 @@ function displayProviders(providers) {
                     </div>
                 </div>
 
-                
+
                 <div class="provider-buttons">
                     <button class="book-now">Book Now</button>
                     <a href="${website}" target="_blank" class="visit-btn" rel="noopener noreferrer">Visit Site</a>
