@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const sheetID = "18aPcMhMDrqFxb19__bW4fA9-SY1RgLWhQSpcZ2MAgIM";
 const sheetName = "providers";
-const apiKey = import.meta.env.VITE_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_API_KEY;
 const SHEET_URL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
 
 // ✅ Default category-based images
