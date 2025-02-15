@@ -1,9 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-const sheetID = "18aPcMhMDrqFxb19__bW4fA9-SY1RgLWhQSpcZ2MAgIM";
-const sheetName = "providers";
-const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-const SHEET_URL = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
+    const CSV_FILE_PATH = "data/providers2.csv"; // Path to your local CSV file
 
 // ✅ Default category-based images
 const defaultImages = {
@@ -27,22 +24,23 @@ const defaultImages = {
     "default": "assets/default.jpg"
 };
 
+
 // ✅ Function to Fetch Providers from Google Sheets
 async function fetchProviders() {
     try {
-        const response = await fetch(SHEET_URL);
-        const data = await response.json();
+        const response = await fetch(CSV_FILE_PATH);
+        const text = await response.text();
+        const rows = text.split("\n").map(row => row.split(",")); // Parse CSV
 
-        if (!data.values) {
-            console.error("No data found in the spreadsheet.");
+        if (rows.length < 2) {
+            console.error("CSV file is empty or incorrectly formatted.");
             return;
         }
 
-        const rows = data.values;
-        const headers = rows[0]; // First row = headers
-        const providers = rows.slice(1).map(row => {
+        const headers = rows.shift();
+        const providers = rows.map(row => {
             return headers.reduce((obj, header, index) => {
-                obj[header] = row[index] || ""; // Handle missing data
+                obj[header.trim()] = row[index] ? row[index].trim() : "";
                 return obj;
             }, {});
         });
@@ -66,13 +64,11 @@ function displayProviders(providers) {
 
         const categoryProviders = providers
             .filter(provider => provider.Category === category)
-            .slice(0, 9); // ✅ Show only 9 providers per category
+            .slice(0, 9);
 
         const cardsContainer = document.createElement("div");
         cardsContainer.classList.add("providerdetails-cards-container");
 
-        // ✅ Shuffle images for variety
-        const imagesForCategory = defaultImages[category] || [defaultImages["default"]];
         let imageIndex = 0;
         
         
@@ -80,87 +76,50 @@ function displayProviders(providers) {
             const card = document.createElement("div");
             card.classList.add("providerdetails-card");
 
-            // ✅ Assign category-based image or default image
-            let providerImage = imagesForCategory[imageIndex % imagesForCategory.length];
+            const providerImage = defaultImages[category] 
+                ? defaultImages[category][imageIndex % defaultImages[category].length] 
+                : defaultImages["default"];
             imageIndex++;
-            
-            const rating = provider.Rating || "0";
-            const reviews = provider.Reviews || "0";
-            const website = provider.Website ? provider.Website.trim() : "#"; // Use "#" if website is missing
-
-            // ✅ Static values
-            const verified = "✔ Coming Soon";
-            const price = "$ Coming Soon";
-            const classSchedule = "Coming Soon";
-            const registrationStarts = "Coming Soon";
-            const reviewsSummary = "Coming Soon";
-            const location = provider.Location || "N/A";
 
             const fullDescription = provider.Description || "No description available";
-            const truncatedDescription = fullDescription.split(" ").slice(0, 18).join(" ") + "..";
 
             card.innerHTML = `
-                <img src="${providerImage}" alt="${provider.Name}">
-                <h3>${provider.Name}</h3>
-                <p class="description">
-                        <span class="short-text">${truncatedDescription}</span>
-                        <span class="full-text hidden">${fullDescription}</span>
-                        <a href="#" class="read-more">Read more</a>
-                    </p>
+                    <img src="${providerImage}" alt="${provider.Name}">
+                    <h3>${provider.Name}</h3>
+                    <p class="description">${fullDescription}</p>
 
-                <div class="provider-info">
-                    <div class="left-column">
-                        <p><strong>Rating:</strong> ⭐ ${rating} (${reviews})</p>
-                        <p><strong>Age:</strong> ${provider.Age || "N/A"}</p>
-                        <p><strong>Class Schedule:</strong> ${classSchedule}</p>
+                    <div class="provider-info">
+                        <div class="left-column">
+                            <p><strong>Rating:</strong> ⭐ ${provider.Rating || "0"} (${provider.Reviews || "0"})</p>
+                            <p><strong>Age:</strong> ${provider.Age || "N/A"}</p>
+                            <p><strong>Class Schedule:</strong> Coming Soon</p>
+                        </div>
+                        <div class="right-column">
+                            <p><strong>PlanO verified:</strong> ✔ Coming Soon</p>
+                            <p><strong>Price:</strong> $ Coming Soon</p>
+                            <p><strong>Registration:</strong> Coming Soon</p>
+                        </div>
                     </div>
-                    <div class="right-column">
-                        <p><strong>PlanO verified:</strong> ${verified}</p>
-                        <p><strong>Price:</strong> ${price}</p>
-                        <p><strong>Registration:</strong> ${registrationStarts}</p>
+
+                    <div class="provider-buttons">
+                        <button class="book-now">Book Now</button>
+                        <a href="${provider.Website || "#"}" target="_blank" class="visit-btn" rel="noopener noreferrer">Visit Site</a>
                     </div>
-                </div>
 
+                    <p class="reviews-summary"><strong>Reviews Summary:</strong> Coming Soon</p>
 
-                <div class="provider-buttons">
-                    <button class="book-now">Book Now</button>
-                    <a href="${website}" target="_blank" class="visit-btn" rel="noopener noreferrer">Visit Site</a>
-                </div>
-
-                <p class="reviews-summary"><strong>Reviews Summary:</strong> ${reviewsSummary}</p>
-
-                <div class="divider"></div>
-
+                    <div class="divider"></div>
                     <div class="footer-info">
-                        <p class="location"><strong>Location:</strong> ${location}</p>
+                        <p class="location"><strong>Location:</strong> ${provider.Location || "N/A"}</p>
                         <span class="tag">Highly Rated</span>
                     </div>
-            `;
+                `;
 
             cardsContainer.appendChild(card);
         });
 
         section.appendChild(cardsContainer);
         container.appendChild(section);
-    });
-    // ✅ Add event listener for "Read More" functionality
-    document.querySelectorAll(".read-more").forEach(button => {
-        button.addEventListener("click", function (e) {
-            e.preventDefault();
-            const card = this.closest(".providerdetails-card");
-            const shortText = card.querySelector(".short-text");
-            const fullText = card.querySelector(".full-text");
-
-            if (fullText.style.display === "none" || fullText.style.display === "") {
-                fullText.style.display = "inline";  // Show full description
-                shortText.style.display = "none";   // Hide short description
-                this.textContent = "Read less";     // Change button text
-            } else {
-                fullText.style.display = "none";    // Hide full description
-                shortText.style.display = "inline"; // Show short description
-                this.textContent = "Read more";     // Reset button text
-            }
-        });
     });
 }
 

@@ -464,14 +464,17 @@ footer {
 
 /* Truncate Description */
 .description {
-    text-align: left;
-    font-size: 1em;
-    max-width: 97%;
-    margin: 10px auto;
+    position: relative;
     overflow: hidden;
+    max-width: 100%;
+    margin-bottom: 10px;
 }
 
 .full-text {
+    display: none;
+}
+
+.full-text.hidden {
     display: none;
 }
 
@@ -480,6 +483,7 @@ footer {
 }
 
 .read-more {
+    display: inline-block;
     color: #0a68a6;
     font-weight: bold;
     text-decoration: none;
