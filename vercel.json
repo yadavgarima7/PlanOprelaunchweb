@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      { "source": "/providers", "destination": "/providers.html" },
+      { "source": "/about", "destination": "/about.html" },
+      { "source": "/providerdetails", "destination": "/providerdetails.html" }
+    ]
+  }
+  
