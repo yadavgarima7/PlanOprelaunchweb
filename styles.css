@@ -631,3 +631,91 @@ footer {
     margin-bottom: 15px;
 }
 
+/* About Us Section */
+.aboutus-section {
+    padding: 40px 5%;
+    margin: auto;
+    width: 90%;
+}
+
+/* Two-Column Layout */
+.aboutus-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* Right Column: Image (Aligned to Top) */
+.aboutus-img {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 40%; /* Keeps the image smaller relative to text */
+}
+
+/* Image Styling */
+.aboutus-img img {
+    flex:1;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Text Styling */
+.aboutus-text {
+    flex: 1;
+    max-width: 55%;
+    padding: 20px;
+    text-align: left;
+    font-size: 1.2em;
+    color: #534b6c;
+}
+
+.aboutus-text p {
+    margin: 15px 0;
+    font-size: 1em;
+}
+
+.aboutus-text strong {
+    color: #380341;
+}
+
+/* Full-Width Text Below Image */
+.aboutus-full-text {
+    font-size: 1.2em;
+    color: #534b6c;
+    max-width: 100%;
+    padding-top: 20px;
+    text-align: left;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .aboutus-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .aboutus-text {
+        max-width: 90%;
+        text-align: center;
+        margin: auto;
+    }
+
+    .aboutus-img {
+        max-width: 90%;
+        justify-content: center;
+    }
+
+    .aboutus-img img {
+        max-width: 100%;
+    }
+
+    .aboutus-full-text {
+        text-align: center;
+    }
+}
