@@ -692,3 +692,37 @@ footer {
     padding-top: 20px;
     text-align: left;
 }
+
+
+/* Responsive Design */
+@media screen and (max-width: 900px) {
+    .aboutus-container {
+        flex-direction: column;
+        text-align: center;
+        width: 100%;
+    }
+
+    .aboutus-img {
+        order: -1; /* Moves the image to the top */
+        max-width: 100%;
+        Width: 98%;
+    }
+
+    .aboutus-img img {
+        max-width: 100%;
+    }
+
+    .aboutus-text {
+        max-width: 100%;
+        padding: 20px;
+        text-align: center;
+        margin-top: 20px;
+        Font-size: 1.3em;
+    }
+
+    .aboutus-full-text {
+        text-align: center;
+        max-width: 100%;
+        Font-size: 1.3em;
+    }
+}
